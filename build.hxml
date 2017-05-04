@@ -1,0 +1,19 @@
+-cp src
+-cp tests
+
+-lib mo
+-lib utest
+
+-main Main
+
+-dce full
+
+-D analyzer-optimize
+
+--each
+
+-neko bin/hxml.n
+
+--next
+
+-js bin/hxml.js
