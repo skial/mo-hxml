@@ -21,3 +21,7 @@
 --next
 
 -python bin/py/hxml.py
+
+--next
+
+-cs bin/cs
