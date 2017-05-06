@@ -7,7 +7,7 @@
 -main Main
 
 -dce full
-
+#-D debug
 -D analyzer-optimize
 
 --each
@@ -17,3 +17,7 @@
 --next
 
 -js bin/hxml.js
+
+--next
+
+-python bin/py/hxml.py

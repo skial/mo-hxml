@@ -62,7 +62,7 @@ enum HxmlKeywords {
 		}
 	}
 	
-	static #if !debug inline #end function value(index:Int) {
+	static inline function value(index:Int) {
     	return 1 << index;
 	}
 
