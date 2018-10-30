@@ -3,11 +3,12 @@ package uhx.mo.hxml;
 import haxe.io.Eof;
 import uhx.mo.Token;
 import byte.ByteData;
-import hxparse.Lexer;
 import haxe.ds.IntMap;
+import hxparse.Ruleset;
+import hxparse.Lexer as HxparseLexer;
 
 using StringTools;
-using uhx.lexer.Hxml;
+using uhx.mo.hxml.Lexer;
 
 /**
  * ...
@@ -22,7 +23,7 @@ enum HxmlKeywords {
 /**
  * @see http://blog.stroep.nl/2015/08/biwise-operations-made-easy-with-haxe/
  */
-@:enum abstract RecognisedHxml(Int) from Int to Int {
+enum abstract RecognisedHxml(Int) from Int to Int {
 	
 	var SourcePath = value(1);
 	var Main = value(2);
@@ -84,15 +85,15 @@ enum HxmlKeywords {
 	
 }
 
-class Lexer extends hxparse.Lexer {
+class Lexer extends HxparseLexer {
 	
-	@:access(uhx.lexer.Hxml) public static var root = Mo.rules([
-	'[\t\r\n]+' => lexer.token( root ),
-	'#[^\r\n]+' => {
+	@:access(uhx.lexer.Hxml) public static var root:Ruleset<Lexer, Token<HxmlKeywords>> = Mo.rules([
+	'[\t\r\n]+' => lexer -> lexer.token( root ),
+	'#[^\r\n]+' => lexer -> {
 		lexer.latest.unknowns.push( Comment( lexer.current.substring( 1 ) ) );
 		lexer.token( root );
 	},
-	'-(-)?[^\r\n]+' => {
+	'-(-)?[^\r\n]+' => lexer -> {
 		var parts = lexer.current.substr( lexer.current.lastIndexOf('-') +1 ).trackAndSplit(' '.code, ['"'.code => '"'.code]);
 		switch (parts[0]) {
 			case 'js': lexer.set( Js, parts[1] );
